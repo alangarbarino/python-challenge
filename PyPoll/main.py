@@ -22,7 +22,7 @@ with open(file_path, "r") as pollfile:
 
         line_count += 1
 
-    #initialize dictionary to hold candidates and votes
+    #initialize dictionary to hold candidate names and initialized vote count
     
     listcounter = 0
 
@@ -35,7 +35,7 @@ with open(file_path, "r") as pollfile:
     
         listcounter += 1
 
-# iterate through file again counting votes
+# iterate through file again to determine candidate voted for and update dictionary vote total
 
 with open(file_path, "r") as pollfile2:
     polline2 = csv.reader(pollfile2, delimiter = ",")
@@ -50,12 +50,13 @@ with open(file_path, "r") as pollfile2:
             vote_count += 1
         line_count += 1
 
-    
+    # display output to screen
     print(f"  Election Results")
     print(f"  ----------------------------")
     print(f"  Total Votes:  {vote_count}")
     print(f"  ----------------------------")
     
+    # iterate through dictionary to display candidate statistics and determine candidate with max votes
     maxvotes = 0
     finalvotes = 0
     winner = "START"
@@ -72,11 +73,14 @@ with open(file_path, "r") as pollfile2:
     print(f"  Winner:  {winner}")
     print(f"  ----------------------------")
 
+# write output to file
 with open("output.txt", "w") as outfile:
     outfile.write(f"  Election Results\n")
     outfile.write(f"  ----------------------------\n")
     outfile.write(f"  Total Votes:  {vote_count}\n")
     outfile.write(f"  ----------------------------\n")
+
+    # iterate through dictionary to write candidate statistics
     for name in candidates:
         finalvotes = TallyDict[name]
         outfile.write(f"  {name}:   {format(float(((finalvotes/vote_count)*100)),'.3f')}%  ({TallyDict[name]})\n")

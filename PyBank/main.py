@@ -1,14 +1,14 @@
 import os
 import csv
 
-#set data file location
+# set data file location
 file_path = os.path.join("../../../NUCHI201811DATA2/Homework/03-Python/Instructions/PyBank/Resources/","budget_data.csv")
 
-#open and read csv file
+# open and read csv file
 with open(file_path, "r") as bankfile:
     bankline = csv.reader(bankfile, delimiter = ",")
 
-    #initialize variables
+    # initialize variables
     line_count = 0         #file line count
     month_count = 0        #month count
     plsum = 0              #profit loss sum      
@@ -20,22 +20,26 @@ with open(file_path, "r") as bankfile:
     plgrdec = 0            #profit loss greatest decrease
     plgrdecmth = "Start"   #profit loss greatest decrease month
 
-    #iterate through file to build metrics
+    # iterate through file to build metrics
     for row in bankline:         
 
         if line_count > 0 :
-
+            
+            # update month and profit-loss sum
             month_count += 1
             plsum = plsum + float(row[1])
 
+            # calculate change from prior row and update total change
             if line_count > 1 :
                 plchg = float(row[1])-plprior
                 plchgtot = plchgtot + plchg
 
+                # update greatest increase
                 if plchg > plgrinc:
                     plgrinc = plchg
                     plgrincmonth = row[0]
             
+                # update greatest decrease 
                 if plchg < plgrdec:
                     plgrdec = plchg
                     plgrdecmonth = row[0]
@@ -43,7 +47,8 @@ with open(file_path, "r") as bankfile:
             plprior = float(row[1])
 
         line_count += 1
-    
+
+    # display output to screen
     print(f"Financial Analysis")
     print(f"----------------------------")
     print(f"Total Months:  {month_count}")
@@ -52,6 +57,7 @@ with open(file_path, "r") as bankfile:
     print(f"Greatest Increase in Profits: {plgrincmonth}  (${round(plgrinc)})")
     print(f"Greatest Decrease in Profits: {plgrdecmonth}  (${round(plgrdec)})")
 
+    # write output file
     with open("output.txt", "w") as outfile:
         outfile.write(f"Financial Analysis\n")
         outfile.write(f"----------------------------\n")
